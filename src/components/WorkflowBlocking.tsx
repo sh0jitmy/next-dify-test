@@ -17,7 +17,23 @@ import { buttonVariants } from "./ui/button"
 export default function WorkflowBlocking() {
     const [input, setInput] = useState('')
     const [output,setOutput] = useState('')
-    const callDifyApi = async() => {}
+    const callDifyApi = async() => {
+        if(!input.trim()) return
+        setOutput('')
+
+        try{
+            const response = await fetch('/api/workflow-block',{
+                method: "POST",
+                headers : {'Content-Type':'application/json'},
+                body : JSON.stringify({query:input})
+            })
+            const result = await response.json()
+            setOutput(result)
+        }catch(error) {
+            console.error("API Connect Error")
+            setOutput("API Call Error")
+        }
+    }
     return (
         <Card className="w-full max-w-4xl mx-auto">
             <CardHeader>
